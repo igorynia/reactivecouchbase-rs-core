@@ -3,6 +3,8 @@ package org.reactivecouchbase.scaladsl
 import java.util.function.Function
 
 import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
+import com.couchbase.client.java.transcoder.JacksonTransformers
+import org.reactivecouchbase.scaladsl.json.CouchbasePlayJsonModule
 import play.api.libs.json._
 import rx.functions.{Action0, Action1, Func1}
 
@@ -29,6 +31,10 @@ object JavaUtils {
 object JsonConverter {
 
   import collection.JavaConversions._
+
+  def registerPlayJsonJacksonModule(): Unit = {
+    JacksonTransformers.MAPPER.registerModule(CouchbasePlayJsonModule)
+  }
 
   // TODO : fix perfs
   def convertToJson(value: JsObject) = JsonObject.fromJson(Json.stringify(value))
